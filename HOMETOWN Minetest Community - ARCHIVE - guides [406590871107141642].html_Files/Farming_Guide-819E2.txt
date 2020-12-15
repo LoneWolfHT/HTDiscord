@@ -1,0 +1,68 @@
+Farming Guide
+
+1. Find somewhere with dirt
+
+2. Dig the area out so it's flat
+
+3. Protect area
+
+4. Dig out channels for water. Or dig an area under the farmland.
+
+5. Fill channels/area under farmland with water (Cover channels with mese lamps if you are building underground or want the plants to grow throughout the night)
+
+6. Choose what you intend to farm in each row. List of available crops will be at the end.
+
+7. Label the rows (Optional)
+
+8. Hoe the rows where you intend to plant your crops. Papyrus, Cactus, and Cocoa don't require tilled soil to grow
+
+9. Plant your crops!
+
+10. Wait for your crops to grow
+
+11. Once your crops have grown go out with a sword (Fastest at digging plants) and harvest them (Removing corn with a lava pick turns it into Corn-on-the-cob)
+
+12. Repeat steps 9 to 11
+
+
+List of crops
+
+1. [Beans] Plant on Bean Pole. The Bean Pole must be placed upon tilled soil.
+
+2. [Blueberries] Plant on tilled soil.
+
+3. [Carrots] Plant these on tilled soil.
+
+4. [Cocoa Beans] Place on Junglewood. Does not need to be near water. When it turns red it is ready.
+
+5. [Coffee Beans] Plant on tilled soil.
+
+6. [Corn] Plant on tilled soil. When dug with a Lava Pickaxe it will drop 'Corn On The Cob' not regular Corn.
+
+7. [Cucumber] Plant on tilled soil.
+
+8. [Grapes] Plant on Trellis. The Trellis must be placed upon tilled soil.
+
+9. [Melon/Watermelon] Plant on tilled soil. Remember to plant a slice. Not a block.
+
+10. [Potato] Plant on tilled soil.
+
+11. [Pumpkin] Plant on tilled soil. Remember to plant a slice. Not a block.
+
+12. [Raspberries] Plant on tilled soil.
+
+13. [Rhubarb] Plant on tilled soil.
+
+14. [Barley] Plant on tilled soil. Remember to plant the seeds. Not the grass.
+
+15. [Cotton] Plant on tilled soil. Remember to plant the seeds. Not the cotton.
+
+16. [Hemp] Plant on tilled soil. Remember to plant the seeds. Not the leaves.
+
+17. [Wheat] Plant on tilled soil. Remember to plant the seeds. Not the grass.
+
+18. [Tomato] Plant on tilled soil.
+
+19. [Strawberries] Plant on tilled soil.
+
+20. [Papyrus] Plant papyrus on normal dirt/dirt_with_grass next to water for it to grow

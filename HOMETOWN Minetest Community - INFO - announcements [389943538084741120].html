@@ -1,0 +1,2111 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HOMETOWN Minetest Community - announcements</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a18863459c8070c3d2e7993bc152405f-96D7F.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">HOMETOWN Minetest Community</div>
+        <div class="preamble__entry">INFO / announcements</div>
+
+            <div class="preamble__entry preamble__entry--small">Very informative stuff.</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/54e79fcf5f488ef6af954d5ba716dc52-6A49B.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="darianbrown#7769" data-user-id="348113852996648961" style="">darianbrown</span>
+
+
+        <span class="chatlog__timestamp">12-Dec-17 07:15 AM</span>
+
+            <div class="chatlog__message " data-message-id="390159771136819200" id="message-390159771136819200">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">New discord server, that&#39;s new</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">09-Jan-18 10:30 AM</span>
+
+            <div class="chatlog__message " data-message-id="400355729606836234" id="message-400355729606836234">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> Discord invites now count as spam, please do not post any Discord invites in chat. This goes for any server - if you need an invite to here, look in <span class="mention">#rules-info</span>.</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128079;" title="&#128079;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44f-8DFC5.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">22-Mar-18 07:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="426391336778727444" id="message-426391336778727444">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">The spam prevention has been disabled. You may now type &quot;<span class="pre pre--inline">Yayyyyyyyyyyyyy</span>&quot; or &quot;<span class="pre pre--inline">woooooooooow</span>&quot; and Dyno wont have a fit. Do not abuse this.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 08:19 AM</span>
+
+            <div class="chatlog__message " data-message-id="433647178095788032" id="message-433647178095788032">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@here</span> and <span class="mention">@everyone</span> are now suppressed. No more mentioning everyone at once <img class="emoji " alt="🙂" title="🙂" src="https://twemoji.maxcdn.com/2/72x72/1f642.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128578;" title="&#128578;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f642-19DF2.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128420;" title="&#128420;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f5a4-E99F6.png">
+                                <span class="chatlog__reaction-count">6</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127358;" title="&#127358;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f17e-78F24.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="⭕" title="⭕" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/2b55-2C031.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128516;" title="&#128516;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f604-ABA04.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127486;" title="&#127486;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1fe-B7194.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❗" title="❗" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/2757-BC354.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="trollface" title="trollface" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/392540616481046528-284C1.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128051;" title="&#128051;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f433-5847F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">12-Apr-18 10:22 PM</span>
+
+            <div class="chatlog__message " data-message-id="434221818430095370" id="message-434221818430095370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> 
+Shoot.</span>
+
+                        </div>
+                    </div>
+
+                    <div class="chatlog__attachment">
+                        <div class="" onclick="">
+                            <div class="">
+                                    <a href="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/unknown-FB6E9.png">
+                                        <img class="chatlog__attachment-thumbnail" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/unknown-FB6E9.png" alt="Image attachment" title="Image: unknown.png (35.34 KB)">
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127358;" title="&#127358;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f17e-78F24.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128539;" title="&#128539;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f61b-C41D5.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128516;" title="&#128516;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f604-ABA04.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">19-Apr-18 08:12 AM</span>
+
+            <div class="chatlog__message " data-message-id="436544673020903436" id="message-436544673020903436">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Hey look it&#39;s a new channel icon because it isn&#39;t winter any more. <img class="emoji " alt="👀" title="👀" src="https://twemoji.maxcdn.com/2/72x72/1f440.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="trollface" title="trollface" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/392540616481046528-284C1.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">24-Apr-18 07:40 AM</span>
+
+            <div class="chatlog__message " data-message-id="438348447272402954" id="message-438348447272402954">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> HOMETOWN Build Competition
+<a href="http://hometownserver.com/viewtopic.php?f=17&p=8329">http://hometownserver.com/viewtopic.php?f=17&amp;p=8329</a>
+Check it out!</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thinksmirk" title="thinksmirk" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747231066030121-A79B8.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">27-Apr-18 08:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="439635800267685905" id="message-439635800267685905">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> Live Server Map! <a href="http://hometownserver.com/viewtopic.php?f=17&t=1221&p=8399#p8399">http://hometownserver.com/viewtopic.php?f=17&amp;t=1221&amp;p=8399#p8399</a></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thinknice" title="thinknice" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747199021678632-D5DE0.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">30-Apr-18 03:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="440648228996775947" id="message-440648228996775947">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">For everyone participating in the HOMETOWN Build Competition, please check this post:
+<a href="http://hometownserver.com/viewtopic.php?f=17&t=1239&p=8428#p8428">http://hometownserver.com/viewtopic.php?f=17&amp;t=1239&amp;p=8428#p8428</a></span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="whatisthisthink" title="whatisthisthink" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747330810773504-BB299.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">18-May-18 04:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="447172804765548545" id="message-447172804765548545">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="MEE6#4876">@MEE6</span> works properly now! You should get your proper roles when you level up!</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">17-Jun-18 10:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="458145722286473217" id="message-458145722286473217">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Your friendly neighborhood Discord admin will be gone til the weekend, don&#39;t burn the server down please <img class="emoji " alt="😃" title="😃" src="https://twemoji.maxcdn.com/2/72x72/1f603.png">
+EDIT: Come on guys, ya burned the server down <img class="emoji " alt="😦" title="😦" src="https://twemoji.maxcdn.com/2/72x72/1f626.png"></span>
+
+                                <span class="chatlog__edited-timestamp" title="07-Jul-18 02:45 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/328d05d28e181cd0059bb84e5c4b680c-7CC5E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dragon TimCan#2460" data-user-id="199972184771395584" style="color: rgb(63,153,206)">OfficerDank/darkturretyt</span>
+
+
+        <span class="chatlog__timestamp">20-Jun-18 07:51 PM</span>
+
+            <div class="chatlog__message " data-message-id="459188540589211653" id="message-459188540589211653">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">So, with the HT map theoretically destroyed, I have a server we can possibly use til HT can get back on it&#39;s feet. It&#39;s my old server Turretonia. Remember that? the server that almost got covered in lava and water but yet still managed to stay intact? Good times... anyways my server is back in service and ya&#39;ll are free to join anytime.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">20-Jun-18 11:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="459240200195801098" id="message-459240200195801098">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>For those who don&#39;t know:</strong>
+<div class="pre pre--multiline nohighlight">The bulk of HOMETOWN&#39;S map can not be recovered. This means unless we can cobble together local map saves that I have, and what players contribute.... everyone&#39;s work is lost.</div>
+This will likely mean an extended down time for the server while map saves are merged. 
+
+---------------------------
+<strong>What you can do to help:</strong>
+If your client has local mapsave enabled, you will be able to contribute your map backup to the server.
+1. Go to your Minetest install folder (this will likely be located at <span class="pre pre--inline">~/.minetest</span> for Linux users)
+2. Go to the <span class="pre pre--inline">server_hometownserver.com_30000</span> folder in the<span class="pre pre--inline">worlds</span> directory (if this doesn&#39;t exist, there&#39;s nothing you can do to help except provide moral support ;)
+3. Add the contents of this folder to a .zip file and upload it to <a href="https://nofile.io/">https://nofile.io/</a>
+4. PM ExeterDad a link to the file along with information about approximately when you were on the server last, via the Minetest forums:  <a href="https://forum.minetest.net/ucp.php?i=pm&mode=compose&u=10544">https://forum.minetest.net/ucp.php?i=pm&amp;mode=compose&amp;u=10544</a>
+
+If you want to enable local map saving, set <span class="pre pre--inline">enable_local_map_saving = true</span> in your <span class="pre pre--inline">minetest.conf</span> file (Note: This may affect performance). From now on, everywhere you go will be saved locally.</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128533;" title="&#128533;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f615-C0BE7.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/328d05d28e181cd0059bb84e5c4b680c-7CC5E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dragon TimCan#2460" data-user-id="199972184771395584" style="color: rgb(63,153,206)">OfficerDank/darkturretyt</span>
+
+
+        <span class="chatlog__timestamp">21-Jun-18 03:37 AM</span>
+
+            <div class="chatlog__message " data-message-id="459305826427994112" id="message-459305826427994112">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">also, please do support EDad on these trying times</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">21-Jun-18 03:25 PM</span>
+
+            <div class="chatlog__message " data-message-id="459484140509855764" id="message-459484140509855764">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>Update:</strong>
+Seems that player data wasn&#39;t lost in the data wipe \o/
+<div class="pre pre--multiline nohighlight">Only the map was on that database. (hah.... like it&#39;s not a big deal)
+All player data, inventories, and such are stored other ways. Some in flat files, some in sqlite3 databases.
+No worries about that kind of stuff :)
+
+Edit: I lied. Our forums and webpages were on the lost database.</div></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/8a5f4ecab6b8d6cec270808fa8691555-A54F0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lone_Wolf#8968" data-user-id="371127739110916111" style="color: rgb(63,153,206)">Lone_Wolf</span>
+
+
+        <span class="chatlog__timestamp">22-Jun-18 11:46 AM</span>
+
+            <div class="chatlog__message " data-message-id="459791231971753994" id="message-459791231971753994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">When the server is back up please look at it as it a complete reset. Because your builds will probably be gone. Compensation is still being considered</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="459791383998496778" id="message-459791383998496778">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">There may be an increase in the amount of events being held</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">05-Jul-18 12:15 PM</span>
+
+            <div class="chatlog__message " data-message-id="464509752714461195" id="message-464509752714461195">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><u>Weather update</u>: Still down with an idk% chance of uptime.</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="whatisthisthink" title="whatisthisthink" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747330810773504-BB299.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/328d05d28e181cd0059bb84e5c4b680c-7CC5E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dragon TimCan#2460" data-user-id="199972184771395584" style="color: rgb(63,153,206)">OfficerDank/darkturretyt</span>
+
+
+        <span class="chatlog__timestamp">11-Jul-18 07:05 PM</span>
+
+            <div class="chatlog__message " data-message-id="466787084540182528" id="message-466787084540182528">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> <strong>ATTENTION!!!</strong> HT SERVER MAP IS BACK ONLINE! <img class="emoji " alt="😄" title="😄" src="https://twemoji.maxcdn.com/2/72x72/1f604.png"></span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Jul-18 07:05 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128076;" title="&#128076;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44c-B3B3D.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+            <div class="chatlog__message " data-message-id="466787146812882966" id="message-466787146812882966">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><a href="http://media.hometownserver.com/#22/7.60003/-12.27500">http://media.hometownserver.com/#22/7.60003/-12.27500</a></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Jul-18 07:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="466794917864407060" id="message-466794917864407060">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention">@everyone</span> AY YO SERVER IS BACK UP PPLZ!</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">12-Jul-18 05:17 PM</span>
+
+            <div class="chatlog__message " data-message-id="467122275011788800" id="message-467122275011788800">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Added Minetest Discord Server invite link to <span class="mention">#rules-info</span>. Go check it out <span class="mention">@everyone</span>! <img class="emoji " alt="😄" title="😄" src="https://twemoji.maxcdn.com/2/72x72/1f604.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">22-Jul-18 12:21 AM</span>
+
+            <div class="chatlog__message " data-message-id="470490642858901524" id="message-470490642858901524">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong>[NOTICE]:</strong> Please ensure that your HOMETOWN Server password is safe and secure. It should be greater than 4 characters at the very least and shouldn&#39;t be easily guessable (General guide: <a href="https://howsecureismypassword.net/)">https://howsecureismypassword.net/)</a>. Having an insecure password could result in your items and or builds being stolen permanently. HOMETOWN staff accept no responsibility for careless password practices.</span>
+
+                                <span class="chatlog__edited-timestamp" title="22-Jul-18 12:21 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">24-Jul-18 02:36 PM</span>
+
+            <div class="chatlog__message " data-message-id="471430558069817395" id="message-471430558069817395">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Dyno is down! Oh noes! <img class="emoji " alt="😱" title="😱" src="https://twemoji.maxcdn.com/2/72x72/1f631.png">
+EDIT: Oh cool he&#39;s back <span class="pre pre--inline">:I</span></span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Jul-18 02:43 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128512;" title="&#128512;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f600-BB250.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">07-Oct-18 03:00 AM</span>
+
+            <div class="chatlog__message " data-message-id="498434353500651520" id="message-498434353500651520">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Just a general notice guys.
+
+In the event that you are ever asked for personal information (real name, address, credit card, etc) you should <strong>not</strong> give it without considerable caution, this applies to this server, the Minetest server, and the internet in general. If someone you don&#39;t know asks you for personal information, ignore/block them and (within reason) report to Discord Staff, remember, you don&#39;t know who you&#39;re talking to online.
+
+Likewise, asking for personal information on this server will not be tolerated, and neither is PMing our members with the same intent.
+
+Thanks guys, stay safe</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127465;" title="&#127465;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e9-5BADE.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127464;" title="&#127464;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e8-D8C42.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127462;" title="&#127462;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e6-79872.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ed-AD677.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">18-Oct-18 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="502659148165414923" id="message-502659148165414923">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><strong><u>Attention HOMETOWNers!</u></strong>
+
+<img class="emoji " alt="🎉" title="🎉" src="https://twemoji.maxcdn.com/2/72x72/1f389.png"> <strong>The Halloween Shop is now open!</strong> <img class="emoji " alt="🎉" title="🎉" src="https://twemoji.maxcdn.com/2/72x72/1f389.png"> 
+
+Browse a selection of Halloween-related goods and get your hands on the much desired limited edition Halloween Costumes!
+
+Just remember, resale of limited editon items is prohibited <img class="emoji " alt="😉" title="😉" src="https://twemoji.maxcdn.com/2/72x72/1f609.png">
+
+Anyway, now that you have access to a selection of Halloween related items, it only seemed appropriate that we hold a decoration competition.
+
+Your task is to decorate any structure in whatever way you want to make it look more Halloween-ey by midnight the 31st of October (server time).
+
+Rules:
+- Must be a <em>decoration</em> (eg, whatever you decorate should look normal when restored to it&#39;s original state)
+- If you don&#39;t have any structures, you can build one, but it has to look normal without decorations
+- Must look spooky or otherwise related to Halloween
+- Groups are allowed, but only one prize per build if you team up
+- Must be built while consuming <em>only</em> Halloween related food*
+
+Prizes:
+1. Jersey, Chest full of Misc Halloween-related items, and of course a couple stacks of gold
+2. Jersey, Chest full of Misc Halloween-related items
+3. Jersey <strong>or</strong> Chest full of Misc Halloween-related items
+
+Submission:
+Post a photo and coordinates on the <span class="mention">#builds</span> channel, you may include multiple pictures (perhaps a before and after? :P) by midnight the 31st of October server time.
+
+Judges:
+Me, and TBD
+
+*That was a joke, BTW</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127474;" title="&#127474;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f2-C2511.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ed-AD677.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128539;" title="&#128539;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f61b-C41D5.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127822;" title="&#127822;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f34e-1EBD6.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127875;" title="&#127875;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f383-0C8C3.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128514;" title="&#128514;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f602-8A1BE.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">31-Oct-18 03:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="507318786752380939" id="message-507318786752380939">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Hi guys! Your submissions for the build competition are due today before server restart. I&#39;ve scrolled back through the <span class="mention">#builds</span> channel and found a number of good builds which have been submitted, however I don&#39;t think any of them have coordinates :P If you&#39;re entering, please submit coordinates and ping me so I know where they are, I need the coordinates to teleport there. To get coordinates:
+
+1. Stand on a full block (white backed clay, stone, or something else without a transparent or half block ontop of it (like carpet, grass, flowers or slabs)
+2. Open up dev tools (F5 on PC, dots and then the gear on mobile)
+3. Take a screenshot and post it in <span class="mention">#builds</span>, please @ mention me so I can jump quickly to them
+
+If someone doesn&#39;t manage to submit their coords by the deadline but has submitted images I&#39;ll postpone judging for another day or until they submit them. Otherwise I&#39;ll try for this afternoon (no guarentees, but it&#39;ll happen soon if not).</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128516;" title="&#128516;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f604-ABA04.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">24-Dec-18 02:26 PM</span>
+
+            <div class="chatlog__message " data-message-id="526888484720476175" id="message-526888484720476175">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&#39;Twas the day before Christmas, and into the night
+Not an IP was stirring, not even the website;
+The players all wait on the Discord server today
+In hopes that HOMETOWN will be up to play;
+Though they all know the chance is slimmer than most
+They still stick around for the holiday post;
+Spend time with your families! This is a game after all!
+You have food to eat, and relatives to call!
+For those that might not have very much to do
+You have friends right here who can talk to you;
+When the talkers are scarce, and activity is slim
+There are other servers to play, other games to win;
+Do not worry, though HOMETOWN isn&#39;t here
+We&#39;ll figure it out, come the New Year;
+For now go have fun, get in the holiday spirit
+2019 is coming, I can almost hear it.
+
+<strong>Merry Christmas <span class="mention">@everyone</span>.</strong> <img class="emoji " alt="🎄" title="🎄" src="https://twemoji.maxcdn.com/2/72x72/1f384.png"> HOMETOWN is down for the Holidays, but don&#39;t be sad. We&#39;ll see what happens come the new year. There are plenty of other servers (even if they don&#39;t have the same feel). Want some fast-pace action? Skywars and Capture The Flag are bustling. Want some chill survival? BananaLand might have that. Lone_Wolf wanted me to mention Undercore as well (which I may or may not run). A little less chill survival? Survival X is your place. Perhaps you&#39;re the creative type, Red Cat Creative is the most active i&#39;ve seen it in a while. If you want a unique puzzle server, Inside the Box is one of my favorites.
+Remember, everyone is still here to talk, in case you don&#39;t feel like playing Minetest.
+Of course, most importantly, spend time with your families! Nothing is more important than that.
+Hopefully things will work out in the new year, we&#39;ll just have to wait and see.
+But for now, <strong>Merry Christmas or Kwanzaa, Happy Holidays or Hanukkah, and of course,
+have a Happy New Year</strong>.</span>
+
+                                <span class="chatlog__edited-timestamp" title="24-Dec-18 02:31 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128515;" title="&#128515;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f603-F8A27.png">
+                                <span class="chatlog__reaction-count">8</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44d-1485B.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128022;" title="&#128022;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f416-D415C.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128061;" title="&#128061;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f43d-D6E86.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128055;" title="&#128055;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f437-A4A79.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127876;" title="&#127876;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f384-E098D.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127464;" title="&#127464;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e8-D8C42.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ed-AD677.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127484;" title="&#127484;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1fc-E17AB.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="bthug2" title="bthug2" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/488800284601090058-92B88.png">
+                                <span class="chatlog__reaction-count">4</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">13-Jan-19 11:23 PM</span>
+
+            <div class="chatlog__message " data-message-id="534271275229511681" id="message-534271275229511681">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Hey <span class="mention">@everyone</span>! Hometown has been down for quite some time now, so I thought it would be nice to make a way for you guys to enjoy the fantastic builds and projects around the server with a singleplayer map save and game. I&#39;ll be going through the same process ExeterDad did to create the recreation of the map back when it crashed last year, and I&#39;ll compile a list of mods, creating my own where necessary to ensure no unknown nodes or items. You&#39;ll be able to roam the server with an extended list of waypoints, copy your old builds off the map with WorldEdit, etc.
+
+<strong>In order to do this I need your help.</strong> As with the map crash, I&#39;m asking for map save download links from anyone who can provide them. If you want to help, follow the steps below to submit a save:
+
+1. Go to your Minetest client&#39;s &quot;words&quot; folder, located at <span class="pre pre--inline">~/.minetest/worlds</span> on Linux and within the <span class="pre pre--inline">worlds</span> folder of your Minetest installation for portable installations (ie, Windows)
+2. Look for a folder with the name: <span class="pre pre--inline">server_hometownserver.com_30000</span> or <span class="pre pre--inline">server_192.151.154.34_30000</span>
+3. Select the contents of this folder, right click, and compress as a zip file (.zip, .7z, etc). While you don&#39;t have to compress it, it&#39;ll save time and my internet.
+4. Upload the file to a file sharing service such as google drive, nofile.io, or any other service of your choice, as long as I can download it via a link. (Note, something like Google Drive is prefered as it tends to remain hosted for longer and more reliably)
+5. PM me the link on Discord along with the approximate time the save would have been accessed.
+
+Any help is greatly appreciated! If you have any questions, ask in <span class="mention">#general</span>. If you have multiple mapsaves please send all of them. 
+
+If you have any coordinates to cool areas or builds, please PM them to me along with a short description, as I&#39;ll be compiling an in-game warp list of all of the interesting builds.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="534271278706851852" id="message-534271278706851852">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">-- Split because I hit the character limit lol --
+
+If you have the coordinates (or general location) of any builds you would <strong>not</strong> like to be included in the downloadable save, and you are the owner of the build (or have some other reason you think it shouldn&#39;t be included), you can PM me for that as well. 
+
+I&#39;m not sure when this will be ready, as it will require waiting time, reviewing of the saves, and some custom scripting, but when it is I will post an announcement here. Additionally, as most of the staff members are against a &quot;clone&quot; server, the use of custom mods and the entire, unmodified map will be limited for private singleplayer use or local/private servers.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">22-Jan-19 12:39 AM</span>
+
+            <div class="chatlog__message " data-message-id="537189539920347146" id="message-537189539920347146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Hey guys! Just an update, thanks to the following people who submitted maps:
+
+- Fooba
+- jSnake
+- Techy5
+- Baggins
+- CalebDavis
+- PumpkinSpice
+- user2
+- lprchaum
+- Sedricius
+
+(if you submitted a map and aren&#39;t on that list, please message me)
+
+I&#39;ve downloaded them all today and when I add my own they total up to around 1.16gb compressed (though I suspect once they&#39;re all merged they will be much smaller due to duplicate nodes)
+
+I will begin merging them within the coming days... wish me luck :P
+
+Also don&#39;t forget, if you have any spots you think I should add to a warp list, mention them in <span class="mention">#general</span></span>
+
+                                <span class="chatlog__edited-timestamp" title="29-Jan-19 12:04 AM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44d-1485B.png">
+                                <span class="chatlog__reaction-count">11</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127480;" title="&#127480;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f8-B6AC7.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127464;" title="&#127464;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e8-D8C42.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127469;" title="&#127469;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ed-AD677.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127484;" title="&#127484;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1fc-E17AB.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127470;" title="&#127470;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ee-B3C1F.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">1</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">15-May-19 05:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="578381083037532172" id="message-578381083037532172">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">For anyone who doesn&#39;t know or doesn&#39;t want to accept it, HOMETOWN is dead and gone. It won&#39;t be coming back. The payment period for the host has long since expired, so any server files they had are gone. ChimneySwift will eventually put a map up for download.
+
+This server now serves as a community chat place. Moderation will not be strict, if at all. A few channels have been archived.
+
+There are plenty of other servers to play, so don&#39;t get stuck waiting for HOMETOWN to come back. I also suggest joining the Unofficial Minetest Discord (link in <span class="mention">#rules-info</span>).
+
+Thank you, everyone, for the times we had. HOMETOWN was made of the players, even the uh.. questionable ones. It will be remembered. ❤</span>
+
+                                <span class="chatlog__edited-timestamp" title="15-May-19 05:40 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44d-1485B.png">
+                                <span class="chatlog__reaction-count">13</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="❤" title="❤" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/2764-18179.png">
+                                <span class="chatlog__reaction-count">17</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128420;" title="&#128420;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f5a4-E99F6.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="☁" title="☁" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/2601-653E0.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127787;" title="&#127787;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f32b-4FFBB.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128532;" title="&#128532;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f614-D4BEE.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127482;" title="&#127482;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1fa-CCAC3.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127475;" title="&#127475;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f3-08F96.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127465;" title="&#127465;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e9-5BADE.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127466;" title="&#127466;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1ea-4B558.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127479;" title="&#127479;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f7-2C305.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127464;" title="&#127464;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1e8-D8C42.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">20-May-19 05:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="580197567778914315" id="message-580197567778914315">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Guyz don&#39;t leave sorvor I got gud announce in a couple dayz</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44d-1485B.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127476;" title="&#127476;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f4-6C4DE.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#127472;" title="&#127472;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f1f0-DAB53.png">
+                                <span class="chatlog__reaction-count">9</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#129300;" title="&#129300;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f914-BD3E8.png">
+                                <span class="chatlog__reaction-count">7</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/4e141337f5cd1c3956517ad627f4c32f-F247D.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ChimneySwift#1337" data-user-id="371478031996420099" style="color: rgb(63,153,206)">ChimneySwift</span>
+
+
+        <span class="chatlog__timestamp">02-Jun-19 10:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="584974633418096641" id="message-584974633418096641">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ay guys, wall of text incoming</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="584974799567192117" id="message-584974799567192117">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&#39;ello folks! How &#39;re yee doin&#39; terday?
+
+I&#39;ve finally got a passable map and mod list. <strong>If you&#39;re not interested skip the technical stuff and read the bottom</strong>, otherwise, here&#39;s why it&#39;s been so annoying to get going:
+
+=== Technical Stuff ===
+
+Basically, Minetest generates map in different units to how it stores and sends it. Map <em>blocks</em> are 16&#179; node blocks which are stored one per row in the map database, however map <em>chunks</em> are 80&#179; node blocks, which are what mapgen actually generates. The problem arises when the map database doesn&#39;t have a full chunk worth of blocks stored in it, as if any of the 125 map blocks within that chunk aren&#39;t already generated and stored in the database, the mapgen will run certain generators on the entire 80&#179; worth of map blocks, regardless of whether there are builds there or not. Since usually clients don&#39;t get sent the entire 80&#179; nodes worth of map for each chunk they enter, we ended up only having about 29% of the map blocks that would have been required to stop mapgen needing to &quot;fill in&quot; all of the saved chunks. This caused builds and stuff getting cut up by cave and rivergen, dusted with snow and overrun by trees.
+
+This <em>is</em> the same issue ExeterDad had, and sorted out by generating all the missing blocks and overlaying the map saves... but I was going to avoid that because I didn&#39;t want to upload a huge file to host. Thanks to Minetest not having like LITTERALLY ANY documentation on the mapgen and mapsave process (and probably mostly just me not having anywhere near as much expertise as ExeterDad has), I thought I could change some flags in the map save to fix the problem, spoiler alert: it didn&#39;t work. So with the trial and error of mapgen I finally got it working after a solid 72 hours worth of generating over 200 thousand map chunks. Turns out the final map so far is about 3.5gb uncompressed which isn&#39;t too bad.
+
+Also I got all the mods working and there shouldn&#39;t be any unknown nodes or items.
+
+=== Technical Stuff ===</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="584974802050088965" id="message-584974802050088965">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Anyway with that out of the way, I have a bit of a predicament. Because I had 23 different saves, and different parts of each save are of different ages, there are likely a ton of builds that aren&#39;t up-to-date on the map I have now. Also, there are a ton of awesome builds which I&#39;d like coordinates for that I don&#39;t know of. So today I&#39;m going to be bringing up a temporary spectate-only server with the map on it, and I want everyone to join and do 4 things:
+
+1. Run around and remember how awesome the server was
+2. Find all of the awesome builds that you or your friends made
+3. Tag each build for review. I&#39;ll be setting up a really simple way to do this, you&#39;ll be able to:
+    - Provide build info
+    - Tell me whether or not it&#39;s up-to-date
+4. Report any errors you find.
+
+For info on how to do that check this video: <span class="pre pre--inline">https://youtu.be/8LpqXbU_vU8</span>
+(basically just do /1 on one corner of the build, do /log on the opposite and then fill out the form)
+
+In order to help you find your builds, you will have access to:
+
+- A full, navigable map located at <a href="http://ht.chimneyswift.pro">http://ht.chimneyswift.pro</a>
+- Fly, fast, noclip and teleport privileges.
+
+<strong>NOTE:</strong>
+Just to be totally clear, this is a very temporary setup and in no way meant to be a substitute for the original HOMETOWN server, this server will be read-only (no build privilages). If the map gets too big from mapgen, I will simply delete it and restore it to how it is now. Mods will have mod perms but don&#39;t have to moderate or do anything, if you break any of the original hometown rules you&#39;ll probably just be banned. Anyone who spams the build logger with garbage builds will have all of their build logs deleted, so... don&#39;t do that.
+
+Please don&#39;t share the address or password outside of people who used to play. The final map will be available to everyone at a later date.
+
+Info:
+
+<span class="spoiler spoiler--hidden" onclick="showSpoiler(event, this)"><span class="spoiler-text">Address: ht.chimneyswift.pro
+Port: 30000
+Default Password: hometown4days (may change)</span></span></span>
+
+                                <span class="chatlog__edited-timestamp" title="02-Jun-19 10:21 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="584975006090526731" id="message-584975006090526731">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">[/wall of text]</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128077;" title="&#128077;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44d-1485B.png">
+                                <span class="chatlog__reaction-count">16</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128515;" title="&#128515;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f603-F8A27.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128076;" title="&#128076;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f44c-B3B3D.png">
+                                <span class="chatlog__reaction-count">12</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thinkthink" title="thinkthink" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747258459160577-D55C8.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="gotem" title="gotem" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433429231037317136-5967B.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="minetest" title="minetest" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/390304102686654464-3ACBF.png">
+                                <span class="chatlog__reaction-count">10</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="thinksmirk" title="thinksmirk" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/433747231066030121-A79B8.png">
+                                <span class="chatlog__reaction-count">3</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">13-Dec-20 03:20 PM</span>
+
+            <div class="chatlog__message " data-message-id="787821187693805598" id="message-787821187693805598">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Alright <span class="mention">@everyone</span>, it&#39;s time to put this server to rest. Please check out the (Un)Official Minetest Discord <a href="https://discord.gg/6W84ytH">https://discord.gg/6W84ytH</a> for your Minetest chatting needs. This server will likely be gone by 2021, so if you want to save something from here, now is the time to do so (not that you&#39;d want to).
+Oh and Merry Christmas or something.</span>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="chatlog__reactions">
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128557;" title="&#128557;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f62d-FE9EC.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="&#128532;" title="&#128532;" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/1f614-D4BEE.png">
+                                <span class="chatlog__reaction-count">5</span>
+                            </div>
+                            <div class="chatlog__reaction">
+                                <img class="emoji emoji--small" alt="linux" title="linux" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/390304144662986752-60305.png">
+                                <span class="chatlog__reaction-count">2</span>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20INFO%20-%20announcements%20%5B389943538084741120%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">13-Dec-20 08:44 PM</span>
+
+            <div class="chatlog__message " data-message-id="787902923261739038" id="message-787902923261739038">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">If you want a copy of this server&#39;s chat history, DM <span class="mention" title="Lone_Wolf#8968">@Lone_Wolf</span>.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 39 message(s)</div>
+</div>
+
+</body>
+</html>

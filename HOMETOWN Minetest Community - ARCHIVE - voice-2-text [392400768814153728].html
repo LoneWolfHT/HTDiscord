@@ -1,0 +1,3820 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HOMETOWN Minetest Community - voice-2-text</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+
+    <style>
+        /* General */
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-300.woff);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-400.woff);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-500.woff);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-600.woff);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Whitney;
+    src: url(https://cdn.jsdelivr.net/gh/Tyrrrz/DiscordFonts@master/whitney-700.woff);
+    font-weight: 700;
+}
+
+body {
+    font-family: "Whitney", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    object-fit: contain;
+}
+
+.markdown {
+    max-width: 100%;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+}
+
+.preserve-whitespace {
+    white-space: pre-wrap;
+}
+
+.spoiler {
+    /* width: fit-content; */
+    display: inline-block;
+    /* This is more consistent across browsers, the old attribute worked well under Chrome but not FireFox. */
+}
+
+.spoiler--hidden {
+    cursor: pointer;
+}
+
+.spoiler-text {
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-text {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler--hidden .spoiler-text::selection {
+    color: rgba(0, 0, 0, 0);
+}
+
+.spoiler-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.spoiler--hidden .spoiler-image {
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.spoiler--hidden .spoiler-image * {
+    filter: blur(44px);
+}
+
+    .spoiler--hidden .spoiler-image:after {
+        content: "SPOILER";
+        color: #dcddde;
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: 600;
+        /* padding: 0.5em 0.7em; */
+        padding: 100%;
+        /* This ruins those beutifully rounded buttons, but it's needed to prevent a FireFox bug with video and audio elemnts. */
+        /* The bug is that you can click trough the spoiler layer and play the video or audio, I could not identify the cause. */
+        /* I leave this here, in case someone is brave enough to venture in to madness that is undocumented browser behaviour. */
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+        font-size: 0.9em;
+    }
+
+.spoiler--hidden:hover .spoiler-image:after {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.quote {
+    margin: 0.1em 0;
+    padding-left: 0.6em;
+    border-left: 4px solid;
+    border-radius: 3px;
+}
+
+.pre {
+    font-family: "Consolas", "Courier New", Courier, monospace;
+}
+
+.pre--multiline {
+    margin-top: 0.25em;
+    padding: 0.5em;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.pre--inline {
+    padding: 2px;
+    border-radius: 3px;
+    font-size: 0.85em;
+}
+
+.mention {
+    border-radius: 3px;
+    padding: 0 2px;
+    color: #7289da;
+    background: rgba(114, 137, 218, .1);
+    font-weight: 500;
+}
+
+.emoji {
+    width: 1.25em;
+    height: 1.25em;
+    margin: 0 0.06em;
+    vertical-align: -0.4em;
+}
+
+.emoji--small {
+    width: 1em;
+    height: 1em;
+}
+
+.emoji--large {
+    width: 2.8em;
+    height: 2.8em;
+}
+
+/* Preamble */
+
+.preamble {
+    display: grid;
+    margin: 0 0.3em 0.6em 0.3em;
+    max-width: 100%;
+    grid-template-columns: auto 1fr;
+}
+
+.preamble__guild-icon-container {
+    grid-column: 1;
+}
+
+.preamble__guild-icon {
+    max-width: 88px;
+    max-height: 88px;
+}
+
+.preamble__entries-container {
+    grid-column: 2;
+    margin-left: 0.6em;
+}
+
+.preamble__entry {
+    font-size: 1.4em;
+}
+
+.preamble__entry--small {
+    font-size: 1em;
+}
+
+/* Chatlog */
+
+.chatlog {
+    max-width: 100%;
+}
+
+.chatlog__message-group {
+    display: grid;
+    margin: 0 0.6em;
+    padding: 0.9em 0;
+    border-top: 1px solid;
+    grid-template-columns: auto 1fr;
+}
+
+.chatlog__author-avatar-container {
+    grid-column: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.chatlog__author-avatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.chatlog__messages {
+    grid-column: 2;
+    margin-left: 1.2em;
+    min-width: 50%;
+}
+
+.chatlog__author-name {
+    font-weight: 500;
+}
+
+.chatlog__timestamp {
+    margin-left: 0.3em;
+    font-size: 0.75em;
+}
+
+.chatlog__message {
+    padding: 0.1em 0.3em;
+    margin: 0 -0.3em;
+    background-color: transparent;
+    transition: background-color 1s ease;
+}
+
+.chatlog__content {
+    font-size: 0.95em;
+    word-wrap: break-word;
+}
+
+.chatlog__edited-timestamp {
+    margin-left: 0.15em;
+    font-size: 0.8em;
+}
+
+.chatlog__attachment {
+    margin-top: 0.3em;
+}
+
+.chatlog__attachment-thumbnail {
+    vertical-align: top;
+    max-width: 45vw;
+    max-height: 500px;
+    border-radius: 3px;
+}
+
+.chatlog__embed {
+    display: flex;
+    margin-top: 0.3em;
+    max-width: 520px;
+}
+
+.chatlog__embed-color-pill {
+    flex-shrink: 0;
+    width: 0.25em;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.chatlog__embed-content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em 0.6em;
+    border: 1px solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.chatlog__embed-content {
+    display: flex;
+    width: 100%;
+}
+
+.chatlog__embed-text {
+    flex: 1;
+}
+
+.chatlog__embed-author {
+    display: flex;
+    margin-bottom: 0.3em;
+    align-items: center;
+}
+
+.chatlog__embed-author-icon {
+    margin-right: 0.5em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.chatlog__embed-author-name {
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-title {
+    margin-bottom: 0.2em;
+    font-size: 0.875em;
+    font-weight: 600;
+}
+
+.chatlog__embed-description {
+    font-weight: 500;
+    font-size: 0.85em;
+}
+
+.chatlog__embed-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chatlog__embed-field {
+    flex: 0;
+    min-width: 100%;
+    max-width: 506px;
+    padding-top: 0.6em;
+    font-size: 0.875em;
+}
+
+.chatlog__embed-field--inline {
+    flex: 1;
+    flex-basis: auto;
+    min-width: 150px;
+}
+
+.chatlog__embed-field-name {
+    margin-bottom: 0.2em;
+    font-weight: 600;
+}
+
+.chatlog__embed-field-value {
+    font-weight: 500;
+}
+
+.chatlog__embed-thumbnail {
+    flex: 0;
+    margin-left: 1.2em;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-image-container {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-image {
+    max-width: 500px;
+    max-height: 400px;
+    border-radius: 3px;
+}
+
+.chatlog__embed-footer {
+    margin-top: 0.6em;
+}
+
+.chatlog__embed-footer-icon {
+    margin-right: 0.2em;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.chatlog__embed-footer-text {
+    font-size: 0.75em;
+    font-weight: 500;
+}
+
+.chatlog__reactions {
+    display: flex;
+}
+
+.chatlog__reaction {
+    display: flex;
+    align-items: center;
+    margin: 0.35em 0.1em 0.1em 0.1em;
+    padding: 0.2em 0.35em;
+    border-radius: 3px;
+}
+
+.chatlog__reaction-count {
+    min-width: 9px;
+    margin-left: 0.35em;
+    font-size: 0.875em;
+}
+
+.chatlog__bot-tag {
+    position: relative;
+    top: -.2em;
+    margin-left: 0.3em;
+    padding: 0.05em 0.3em;
+    border-radius: 3px;
+    vertical-align: middle;
+    line-height: 1.3;
+    background: #7289da;
+    color: #ffffff;
+    font-size: 0.625em;
+    font-weight: 500;
+}
+
+/* Postamble */
+
+.postamble {
+    margin: 1.4em 0.3em 0.6em 0.3em;
+    padding: 1em;
+    border-top: 1px solid;
+}
+    </style>
+    <style>
+        /* General */
+
+body {
+    background-color: #36393e;
+    color: #dcddde;
+}
+
+a {
+    color: #0096cf;
+}
+
+.spoiler-text {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.spoiler--hidden .spoiler-text {
+    background-color: #202225;
+}
+
+.spoiler--hidden:hover .spoiler-text {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+.quote {
+    border-color: #4f545c;
+}
+
+.pre {
+    background-color: #2f3136 !important;
+}
+
+.pre--multiline {
+    border-color: #282b30 !important;
+    color: #b9bbbe !important;
+}
+
+/* === Preamble === */
+
+.preamble__entry {
+    color: #ffffff;
+}
+
+/* Chatlog */
+
+.chatlog__message-group {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chatlog__author-name {
+    color: #ffffff;
+}
+
+.chatlog__timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__message--highlighted {
+    background-color: rgba(114, 137, 218, 0.2) !important;
+}
+
+.chatlog__message--pinned {
+    background-color: rgba(249, 168, 37, 0.05);
+}
+
+.chatlog__edited-timestamp {
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.chatlog__embed-color-pill--default {
+    background-color: rgba(79, 84, 92, 1);
+}
+
+.chatlog__embed-content-container {
+    background-color: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+}
+
+.chatlog__embed-author-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-author-name-link {
+    color: #ffffff;
+}
+
+.chatlog__embed-title {
+    color: #ffffff;
+}
+
+.chatlog__embed-description {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-field-name {
+    color: #ffffff;
+}
+
+.chatlog__embed-field-value {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__embed-footer {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.chatlog__reaction {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.chatlog__reaction-count {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Postamble */
+
+.postamble {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.postamble__entry {
+    color: #ffffff;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/solarized-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.pre--multiline').forEach(block => hljs.highlightBlock(block));
+        });
+    </script>
+
+    <script>
+        function scrollToMessage(event, id) {
+            var element = document.getElementById('message-' + id);
+
+            if (element) {
+                event.preventDefault();
+
+                element.classList.add('chatlog__message--highlighted');
+
+                window.scrollTo({
+                    top: element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - (window.innerHeight / 2),
+                    behavior: 'smooth'
+                });
+
+                window.setTimeout(function() {
+                    element.classList.remove('chatlog__message--highlighted');
+                }, 2000);
+            }
+        }
+
+        function showSpoiler(event, element) {
+            if (element && element.classList.contains('spoiler--hidden')) {
+                event.preventDefault();
+                element.classList.remove('spoiler--hidden');
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="preamble">
+    <div class="preamble__guild-icon-container">
+        <img class="preamble__guild-icon" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a18863459c8070c3d2e7993bc152405f-96D7F.png" alt="Guild icon">
+    </div>
+    <div class="preamble__entries-container">
+        <div class="preamble__entry">HOMETOWN Minetest Community</div>
+        <div class="preamble__entry">ARCHIVE / voice-2-text</div>
+
+            <div class="preamble__entry preamble__entry--small">Text channel for Voice 2.</div>
+
+    </div>
+</div>
+
+<div class="chatlog">
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/328d05d28e181cd0059bb84e5c4b680c-7CC5E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dragon TimCan#2460" data-user-id="199972184771395584" style="color: rgb(63,153,206)">OfficerDank/darkturretyt</span>
+
+
+        <span class="chatlog__timestamp">02-Mar-18 09:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="419364404723843082" id="message-419364404723843082">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Turretonia</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">02-Mar-18 09:24 PM</span>
+
+            <div class="chatlog__message " data-message-id="419364479344836608" id="message-419364479344836608">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Will my sad computer hate your server?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="419364584097447946" id="message-419364584097447946">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Mesecons is fine, even technic can be. But throw in ethereal and nopenopenope.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/39d93defd60cea1831cfee70a63f290b-608B0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="ebotch#7893" data-user-id="232342393255493632" style="">ebotch</span>
+
+
+        <span class="chatlog__timestamp">02-Mar-18 10:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="419373871699984384" id="message-419373871699984384">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji emoji--large" alt="🤓" title="🤓" src="https://twemoji.maxcdn.com/2/72x72/1f913.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/16c197c4c3f0eb808f9bceb6e1075e71-CECF9.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Rythm#3722" data-user-id="235088799074484224" style="">Rythm</span>
+
+            <span class="chatlog__bot-tag">BOT</span>
+
+        <span class="chatlog__timestamp">10-Apr-18 06:32 PM</span>
+
+            <div class="chatlog__message " data-message-id="433439286671704084" id="message-433439286671704084">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="youtube" title="youtube" src="https://cdn.discordapp.com/emojis/335112740957978625.png"> <strong>Searching</strong> <img class="emoji " alt="🔎" title="🔎" src="https://twemoji.maxcdn.com/2/72x72/1f50e.png"> <span class="pre pre--inline">https://youtu.be/7cHUiSFniHw</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433439287841652747" id="message-433439287841652747">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji " alt="🙅" title="🙅" src="https://twemoji.maxcdn.com/2/72x72/1f645.png"><strong> No permission to connect to</strong> <span class="pre pre--inline">General</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/b2290da523d733f99dc5b13b5e3b2cfb-BD984.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TMcSquared#1717" data-user-id="383738216118878208" style="">TMcSquared</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="433732023555981312" id="message-433732023555981312">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">harmonynomrah</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="433732143793963012" id="message-433732143793963012">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/b2290da523d733f99dc5b13b5e3b2cfb-BD984.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TMcSquared#1717" data-user-id="383738216118878208" style="">TMcSquared</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="433732170302095362" id="message-433732170302095362">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xd sry nvmd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 01:56 PM</span>
+
+            <div class="chatlog__message " data-message-id="433732182713040908" id="message-433732182713040908">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433732212504920064" id="message-433732212504920064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">someone sent me a book saying that xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/b2290da523d733f99dc5b13b5e3b2cfb-BD984.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="TMcSquared#1717" data-user-id="383738216118878208" style="">TMcSquared</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 01:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="433732228887871489" id="message-433732228887871489">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:06 PM</span>
+
+            <div class="chatlog__message " data-message-id="433734509322829824" id="message-433734509322829824">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">brb</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="433746451059965973" id="message-433746451059965973">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">It&#39;s not like i&#39;m gonna ban you for being excited or anything.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433746754681176065" id="message-433746754681176065">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> He.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433746880133070848" id="message-433746880133070848">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ChimneySwift as a girl <img class="emoji " alt="thinkioning" title="thinkioning" src="https://cdn.discordapp.com/emojis/416099149683884032.png"> <em>That&#39;s</em> a thought.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/328d05d28e181cd0059bb84e5c4b680c-7CC5E.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Dragon TimCan#2460" data-user-id="199972184771395584" style="color: rgb(63,153,206)">OfficerDank/darkturretyt</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:55 PM</span>
+
+            <div class="chatlog__message " data-message-id="433746919660191744" id="message-433746919660191744">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji emoji--large" alt="thonking" title="thonking" src="https://cdn.discordapp.com/emojis/416099116645482498.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747355901231104" id="message-433747355901231104">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji emoji--large" alt="thinkeyes" title="thinkeyes" src="https://cdn.discordapp.com/emojis/433747170156478487.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747603260309515" id="message-433747603260309515">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ExeterDad</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747630380548116" id="message-433747630380548116">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> It&#39;s pronounced <span class="pre pre--inline">ecks-ter</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747722609360898" id="message-433747722609360898">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">British place names are weird. Like Gloucester.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433747735955505152" id="message-433747735955505152">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Glos-ter XD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747772525510667" id="message-433747772525510667">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">but why tho</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433747779425140737" id="message-433747779425140737">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">And Leicester XD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433747796315734016" id="message-433747796315734016">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Because Brits?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/8a5f4ecab6b8d6cec270808fa8691555-A54F0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lone_Wolf#8968" data-user-id="371127739110916111" style="color: rgb(63,153,206)">Lone_Wolf</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 02:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="433748076046319629" id="message-433748076046319629">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">exit-er</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433748122288783361" id="message-433748122288783361">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">or eggs-et-er</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433748213636268032" id="message-433748213636268032">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I switch inbetween those...</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="433748349431316480" id="message-433748349431316480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">It&#39;s pronounced ecks-ter</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433748725895266314" id="message-433748725895266314">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Pretty sure <img class="emoji " alt="thinkthink" title="thinkthink" src="https://cdn.discordapp.com/emojis/433747258459160577.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/8a5f4ecab6b8d6cec270808fa8691555-A54F0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lone_Wolf#8968" data-user-id="371127739110916111" style="color: rgb(63,153,206)">Lone_Wolf</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="433748935304282122" id="message-433748935304282122">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">English way of pronouncing it is exit-er</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433749041667375124" id="message-433749041667375124">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Unless that Rugby club has a different way of spelling their name</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="433749089516126209" id="message-433749089516126209">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">we could just ask him</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433749805634682880" id="message-433749805634682880">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> Nope.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433749861465325569" id="message-433749861465325569">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">What she said.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433749953517453343" id="message-433749953517453343">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433749994315579421" id="message-433749994315579421">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750014309695490" id="message-433750014309695490">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Later peoples. Stay outta trouble.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750017820327936" id="message-433750017820327936">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433750054743048192" id="message-433750054743048192">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433750079804014593" id="message-433750079804014593">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/e9af7b0934eca08f4abd5115d0e48819-FC5E5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Emerald#6789" data-user-id="242070396587737098" style="">Emerald</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750112276185089" id="message-433750112276185089">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">omg GD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750148737400833" id="message-433750148737400833">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Why does he assume everytime I say his name he&#39;s in trouble.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/8a5f4ecab6b8d6cec270808fa8691555-A54F0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lone_Wolf#8968" data-user-id="371127739110916111" style="color: rgb(63,153,206)">Lone_Wolf</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750220648480769" id="message-433750220648480769">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">? lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:09 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750408104640513" id="message-433750408104640513">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I cringe when people say HOMETOWN is based on a city in England.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f9dfa7646c13c00124ddda5bf2c93076-060D0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zacxie#6099" data-user-id="301159540920156160" style="">Zacxie</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750664179482625" id="message-433750664179482625">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><img class="emoji emoji--large" alt="😂" title="😂" src="https://twemoji.maxcdn.com/2/72x72/1f602.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/8a5f4ecab6b8d6cec270808fa8691555-A54F0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Lone_Wolf#8968" data-user-id="371127739110916111" style="color: rgb(63,153,206)">Lone_Wolf</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="433750923215503370" id="message-433750923215503370">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">They missed the &#39;new&#39; part</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:13 PM</span>
+
+            <div class="chatlog__message " data-message-id="433751491250225174" id="message-433751491250225174">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753243567390722" id="message-433753243567390722">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> That was a great server.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753633600045056" id="message-433753633600045056">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="TMcSquared#1717">@TMcSquared</span> That&#39;s not how wild cards work, but we dont have actual ones either.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753669725454337" id="message-433753669725454337">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> it catches &quot;snatch&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753698636660746" id="message-433753698636660746">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">which most people would find absurd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753722036944916" id="message-433753722036944916">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">but when you know what it means..</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753795885793290" id="message-433753795885793290">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Thats not all it means</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433753943760175106" id="message-433753943760175106">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="blake357#9669">@blake357</span> It&#39;s not a bug; it&#39;s intentional. That word has nother meaning.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433754621773611018" id="message-433754621773611018">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><span class="mention" title="TMcSquared#1717">@TMcSquared</span> Yeah good luck with that</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="433755913594208267" id="message-433755913594208267">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Heya</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433755926617653248" id="message-433755926617653248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I can hear you now xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433755957063974912" id="message-433755957063974912">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Yeah ^^</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756028195176448" id="message-433756028195176448">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756066724053002" id="message-433756066724053002">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Sure</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756444379185154" id="message-433756444379185154">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">2candy?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756666203340812" id="message-433756666203340812">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756873674719232" id="message-433756873674719232">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756955970895882" id="message-433756955970895882">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Nah I want dinner :3</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433756968205811742" id="message-433756968205811742">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I&#39;m hungry xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433757212658106378" id="message-433757212658106378">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Someone asked me to take my unicorn costume off!!!! O.o</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433757275614871572" id="message-433757275614871572">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Beer is nasty xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433757417168437248" id="message-433757417168437248">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Food :DDD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433757433270108160" id="message-433757433270108160">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Bye</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433757585162764298" id="message-433757585162764298">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433758126920171541" id="message-433758126920171541">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">kk cya</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 03:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="433758225926586379" id="message-433758225926586379">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">cya blake</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f6eda8e7502dfde89004ed84d8e9107e-721C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="blake357#9669" data-user-id="433677761278771210" style="">blake357</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 05:08 PM</span>
+
+            <div class="chatlog__message " data-message-id="433780384317308931" id="message-433780384317308931">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">hi gd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 05:16 PM</span>
+
+            <div class="chatlog__message " data-message-id="433782435507994654" id="message-433782435507994654">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">testing do you hear anything? XD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="433800564221018112" id="message-433800564221018112">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">i hear crazy staticness</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:28 PM</span>
+
+            <div class="chatlog__message " data-message-id="433800650262970379" id="message-433800650262970379">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yikes</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:29 PM</span>
+
+            <div class="chatlog__message " data-message-id="433800703446745103" id="message-433800703446745103">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">there we go, much better</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433800750087274516" id="message-433800750087274516">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">i don&#39;t hear you though</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801099653152778" id="message-433801099653152778">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oh</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433801109404909568" id="message-433801109404909568">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433801117495721995" id="message-433801117495721995">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">hmm,m</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:30 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801140283506698" id="message-433801140283506698">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">If i turn it up all the way, i can kinda hear something</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801248186040321" id="message-433801248186040321">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">hear that?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801355761549323" id="message-433801355761549323">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">i hear less static, more static back and forth</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:31 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801379199451146" id="message-433801379199451146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">oh hmmm</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433801718044557322" id="message-433801718044557322">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">what about now?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801793206747146" id="message-433801793206747146">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I think i can kinda make out some typing noise maybe lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801824911228928" id="message-433801824911228928">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol hmm</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801892565352458" id="message-433801892565352458">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">clackety clack kind of sound in the midst of static. lo</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433801899590942720" id="message-433801899590942720">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">l</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:33 PM</span>
+
+            <div class="chatlog__message " data-message-id="433801917731176450" id="message-433801917731176450">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yikes</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:35 PM</span>
+
+            <div class="chatlog__message " data-message-id="433802306149023746" id="message-433802306149023746">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">hmm, i heard some beeps</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433802654452547594" id="message-433802654452547594">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">when you connect and disconnect, it kinda sounds like a dog just puked. lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:37 PM</span>
+
+            <div class="chatlog__message " data-message-id="433802698446602252" id="message-433802698446602252">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433803079536869386" id="message-433803079536869386">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">weird...</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803089816977408" id="message-433803089816977408">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">you on windows?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:38 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803106392735756" id="message-433803106392735756">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">nope</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803222130360331" id="message-433803222130360331">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">have any other mics to try?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/29a2501a34e5af404b797f63e473b8f6-F5FE5.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Techy5#2400" data-user-id="414667017027584003" style="">Techy5</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:39 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803411423756289" id="message-433803411423756289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">you sure the right mic is selected?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803482286391307" id="message-433803482286391307">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yeah</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:40 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803641418285064" id="message-433803641418285064">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">its quiet now, just nothing though. lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433803768337924096" id="message-433803768337924096">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">static has returned. lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:41 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803803209236481" id="message-433803803209236481">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">aw</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803956226097162" id="message-433803956226097162">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">has it worked today on this pc?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:42 PM</span>
+
+            <div class="chatlog__message " data-message-id="433803994897317899" id="message-433803994897317899">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Nope :/</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804012878561280" id="message-433804012878561280">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">It&#39;s weird</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804081631592449" id="message-433804081631592449">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I think it might be because this computer is old and it has two plugins one for mic and one for headphones</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804142599733249" id="message-433804142599733249">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">My laptop only has 1 plugin for both</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:43 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804282551074816" id="message-433804282551074816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">if its seperated on the pc, then a headset with both won&#39;t work</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804335864872960" id="message-433804335864872960">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">the plug is different</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804754309742612" id="message-433804754309742612">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">the seperated one has two contacts and the combined one has three</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804808349155338" id="message-433804808349155338">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I switched to my laptop</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/a_a6de41036ae7491aaa017df9dcd6c424-99D00.gif" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="GreenXenith#3232" data-user-id="286032516467654656" style="color: rgb(63,153,206)">GreenXenith</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804823792451594" id="message-433804823792451594">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">cant go wrong with usb headphones ;P</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804853094121483" id="message-433804853094121483">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433804891643707403" id="message-433804891643707403">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">can you hear now?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804922300006410" id="message-433804922300006410">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yeah nomrah sounds</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:45 PM</span>
+
+            <div class="chatlog__message " data-message-id="433804943040839691" id="message-433804943040839691">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="433805363985514507" id="message-433805363985514507">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">bravo</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="433805366149644289" id="message-433805366149644289">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">hear?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:47 PM</span>
+
+            <div class="chatlog__message " data-message-id="433805406427414549" id="message-433805406427414549">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">standing ovation</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="433805788977430559" id="message-433805788977430559">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:49 PM</span>
+
+            <div class="chatlog__message " data-message-id="433805879075405830" id="message-433805879075405830">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">the crowd goes wild. a hootin and a hollerin</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433806073229737994" id="message-433806073229737994">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">are you jumping around and kicking stuff too? lol</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Apr-18 06:50 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="433806608607346697" id="message-433806608607346697">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">nope xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:52 PM</span>
+
+            <div class="chatlog__message " data-message-id="433806632326004736" id="message-433806632326004736">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">i like it, you are good</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:54 PM</span>
+
+            <div class="chatlog__message " data-message-id="433807171621224451" id="message-433807171621224451">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ty</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:57 PM</span>
+
+            <div class="chatlog__message " data-message-id="433807875446538250" id="message-433807875446538250">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">violin seems really difficult. No frets and the bow thingy boggles my mind.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:58 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808107605327883" id="message-433808107605327883">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yeah xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808246013165568" id="message-433808246013165568">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">you know that devil went down to gorgia song?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808266804592643" id="message-433808266804592643">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 06:59 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808414603477012" id="message-433808414603477012">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">arrgg</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433808478704893962" id="message-433808478704893962">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">ye have any rum?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f9dfa7646c13c00124ddda5bf2c93076-060D0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zacxie#6099" data-user-id="301159540920156160" style="">Zacxie</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808489966600202" id="message-433808489966600202">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Oml</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433808516071948299" id="message-433808516071948299">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I love that song</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433808545918484480" id="message-433808545918484480">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Great song lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:00 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808554089250816" id="message-433808554089250816">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433808632027545600" id="message-433808632027545600">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">I&#39;ve been playing for 5-6 years xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808731562835972" id="message-433808731562835972">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">i bet, not something to pick up overnight</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433808775657553950" id="message-433808775657553950">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace"><a href="https://www.youtube.com/watch?v=tnepPZChA5U">https://www.youtube.com/watch?v=tnepPZChA5U</a></span>
+
+                        </div>
+                    </div>
+
+
+                    <div class="chatlog__embed">
+                            <div class="chatlog__embed-color-pill" style="background-color: rgba(255,0,0,255)"></div>
+
+                        <div class="chatlog__embed-content-container">
+                            <div class="chatlog__embed-content">
+                                <div class="chatlog__embed-text">
+                                        <div class="chatlog__embed-author">
+
+                                                <span class="chatlog__embed-author-name">
+                                                        <a class="chatlog__embed-author-name-link" href="https://www.youtube.com/user/oprylive">Grand Ole Opry</a>
+                                                </span>
+                                        </div>
+
+                                        <div class="chatlog__embed-title">
+                                                <a class="chatlog__embed-title-link" href="https://www.youtube.com/watch?v=tnepPZChA5U">
+                                                    <div class="markdown preserve-whitespace">Charlie Daniels Band - &quot;Devil Went Down to Georgia&quot; | Live at the ...</div>
+                                                </a>
+                                        </div>
+
+                                        <div class="chatlog__embed-description">
+                                            <div class="markdown preserve-whitespace">Charlie Daniels Band performs &quot;Devil Went Down to Georgia&quot; on Opry Live. Charlie was inducted as the newest member of the Grand Ole Opry at the Ryman Auditor...</div>
+                                        </div>
+
+                                </div>
+
+                                    <div class="chatlog__embed-thumbnail-container">
+                                        <a class="chatlog__embed-thumbnail-link" href="https://i.ytimg.com/vi/tnepPZChA5U/maxresdefault.jpg">
+                                            <img class="chatlog__embed-thumbnail" src="https://i.ytimg.com/vi/tnepPZChA5U/maxresdefault.jpg" alt="Thumbnail">
+                                        </a>
+                                    </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:01 PM</span>
+
+            <div class="chatlog__message " data-message-id="433808795932819457" id="message-433808795932819457">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f9dfa7646c13c00124ddda5bf2c93076-060D0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zacxie#6099" data-user-id="301159540920156160" style="">Zacxie</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809004922142730" id="message-433809004922142730">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;The devil went down to Georgia, he was looking for a soul to steal&quot; HAH ME!!! Come get me!!! Just come up to Canada! <img class="emoji " alt="😂" title="😂" src="https://twemoji.maxcdn.com/2/72x72/1f602.png"></span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:02 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809129270673419" id="message-433809129270673419">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809236732936193" id="message-433809236732936193">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">you have to show him up on a violin though</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433809328827400213" id="message-433809328827400213">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">then you get a fiddle of gold</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f9dfa7646c13c00124ddda5bf2c93076-060D0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zacxie#6099" data-user-id="301159540920156160" style="">Zacxie</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:03 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809360431611914" id="message-433809360431611914">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">Yeah I think I&#39;ll just kill him and his ears</span>
+
+                                <span class="chatlog__edited-timestamp" title="11-Apr-18 07:03 PM">(edited)</span>
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809492543799317" id="message-433809492543799317">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">yeah that would be a good stratedgy.</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809510898073600" id="message-433809510898073600">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f9dfa7646c13c00124ddda5bf2c93076-060D0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="Zacxie#6099" data-user-id="301159540920156160" style="">Zacxie</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:04 PM</span>
+
+            <div class="chatlog__message " data-message-id="433809571577069570" id="message-433809571577069570">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">&quot;Squeallllll&quot; &quot;SQEAK&quot;</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:07 PM</span>
+
+            <div class="chatlog__message " data-message-id="433810365743235074" id="message-433810365743235074">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xdd</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811033279168512" id="message-433811033279168512">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">my cat is concerned about the high notes</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811049901457419" id="message-433811049901457419">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xDDDD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433811054242562048" id="message-433811054242562048">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">sry</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:10 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811068339617794" id="message-433811068339617794">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811410154160128" id="message-433811410154160128">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811428512890880" id="message-433811428512890880">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">my cat does that when i play guitar too. she looks at me funny when I mess up or go into high notes</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:11 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811448976769036" id="message-433811448976769036">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">xD</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/6f79dbd560d1f9541703dfe6ef734a59-29B08.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="jSnake04#6722" data-user-id="253796899772039169" style="">jSnake04</span>
+
+
+        <span class="chatlog__timestamp">11-Apr-18 07:12 PM</span>
+
+            <div class="chatlog__message " data-message-id="433811585534918669" id="message-433811585534918669">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">cartoon sound effects?</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="433811613850796033" id="message-433811613850796033">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">lol</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/f6eda8e7502dfde89004ed84d8e9107e-721C0.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="blake357#9669" data-user-id="433677761278771210" style="">blake357</span>
+
+
+        <span class="chatlog__timestamp">07-May-18 01:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="443153319540817944" id="message-443153319540817944">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">im heading out nom</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+            <div class="chatlog__message " data-message-id="443153329665867787" id="message-443153329665867787">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">bye</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+
+<div class="chatlog__message-group">
+    <div class="chatlog__author-avatar-container">
+        <img class="chatlog__author-avatar" src="HOMETOWN%20Minetest%20Community%20-%20ARCHIVE%20-%20voice-2-text%20%5B392400768814153728%5D.html_Files/7e2e168db810e904fe5c40774fa03af1-E2696.png" alt="Avatar">
+    </div>
+    <div class="chatlog__messages">
+        <span class="chatlog__author-name" title="♡치치♡#2051" data-user-id="359452923614199809" style="color: rgb(63,153,206)">♡ᴺᵒᵐʸ♡</span>
+
+
+        <span class="chatlog__timestamp">07-May-18 01:53 PM</span>
+
+            <div class="chatlog__message " data-message-id="443153356165480458" id="message-443153356165480458">
+                    <div class="chatlog__content">
+                        <div class="markdown">
+                            <span class="preserve-whitespace">bye!</span>
+
+                        </div>
+                    </div>
+
+
+
+            </div>
+    </div>
+</div>
+
+</div>
+
+<div class="postamble">
+    <div class="postamble__entry">Exported 162 message(s)</div>
+</div>
+
+</body>
+</html>
